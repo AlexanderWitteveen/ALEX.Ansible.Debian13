@@ -24,5 +24,7 @@
 - ansible.builtin.include_role: # dotnet and powershell
     name: alex.debian13.installmicrosoftpackages
 
+- ansible.builtin.include_role: # scripts
+    name: alex.debian13.scripts
 
 

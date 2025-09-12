@@ -96,6 +96,9 @@
 - ansible.builtin.include_role: # certificates
     name: alex.debian13.certificates
 
+- ansible.builtin.include_role: # cronjobs
+    name: alex.debian13.cronjobs
+
 - name: Set a hostname
   ansible.builtin.hostname:
     name: "{{ prop_hostname }}"

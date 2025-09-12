@@ -1,0 +1,14 @@
+---
+
+- name: Template a script file
+  ansible.builtin.template:
+    src: shutdown.sh.j2
+    dest: "/{{ prop_basename }}/scripts/shutdown.sh"
+    owner: "{{ prop_admin_username }}"
+    group: "{{ prop_admin_groupname }}"
+    mode: '0775'
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
