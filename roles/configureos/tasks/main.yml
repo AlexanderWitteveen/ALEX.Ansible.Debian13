@@ -1,0 +1,116 @@
+---
+
+- ansible.builtin.include_role: # aptupgrade
+    name: alex.debian13.aptupgrade
+
+- name: Install a list of packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+    - cifs-utils
+    - samba
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+# - name: install setup tools for venv
+#   shell: |
+#     /{{ prop_basename }}/python/venv/bin/python3 -m pip install setuptools
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+- name: Install pip python package
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    virtualenv: /alex/python/venv
+  loop:
+    - pyyaml
+    - requests
+    - requests-toolbelt   
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Template a file to /etc/file.conf
+  ansible.builtin.template:
+    src: .smbcred.j2
+    dest: "/home/{{ prop_admin_username }}/.{{ prop_basename }}/.smbcred"
+    owner: "{{ prop_admin_username }}"
+    group: "{{ prop_admin_groupname }}"
+    mode: '0400'
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- ansible.builtin.include_role: # mount smb shares
+    name: alex.debian13.mountsmbshares
+
+- name: Set SMB User
+  shell: |
+    (echo "{{ prop_admin_password }}" ; echo "{{ prop_admin_password }}") | smbpasswd -s -a {{ prop_admin_username }}
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: add smb share
+  shell: |
+    #echo "Path: {{ item.name }}"
+    #echo "Path: {{ item.comment }}"
+    #echo "Path: {{ item.path }}"
+    #echo "mode: {{ item.mode }}"
+    #echo "mode: {{ item.guest }}"
+    line="[{{ item.name }}]"
+    count=$(cat /etc/samba/smb.conf | grep -x -F "$line" | wc -l)
+    #echo "count = $count"
+    if [ $count -gt 0 ] ; then
+      echo "NO CHANGE"
+    else
+      echo "[{{ item.name }}]" >> /etc/samba/smb.conf
+      echo "   comment = {{ item.comment }}" >> /etc/samba/smb.conf
+      echo "   path = {{ item.path }}" >> /etc/samba/smb.conf
+      echo "   read only = {{ item.mode }}" >> /etc/samba/smb.conf
+      echo "   browseable = yes" >> /etc/samba/smb.conf
+      echo "   guest ok = {{ item.guest }}" >> /etc/samba/smb.conf
+      service smbd restart
+      echo "CHANGED"
+    fi
+  register: result
+  loop: "{{ prop_smb_shares }}"
+  changed_when: '"CHANGED" in result.stdout'
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- ansible.builtin.include_role: # datafolders
+    name: alex.debian13.datafolders
+
+- ansible.builtin.include_role: # certificates
+    name: alex.debian13.certificates
+
+- name: Set a hostname
+  ansible.builtin.hostname:
+    name: "{{ prop_hostname }}"
+  register: hostnameresult
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Conditionally reboot the machine with all defaults
+  reboot:
+  when: hostnameresult.changed
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+

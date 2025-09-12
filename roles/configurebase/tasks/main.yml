@@ -1,0 +1,132 @@
+---
+
+- ansible.builtin.include_role: # knownoshost
+    name: alex.base.knownoshost
+
+- name: First logon
+  shell: |
+    {{ role_path }}/scripts/first.logon.sh "{{ prop_ipaddress }}" "{{ prop_admin_password }}"
+    if [[ "$?" != "0" ]]; then
+      echo "Error executing script" 
+    fi
+  args:
+    executable: /bin/bash
+  register: expectresult
+  changed_when: '"Changed" in expectresult.stdout'
+  failed_when: '("Error" in expectresult.stdout) or ("Host key verification failed." in expectresult.stdout)'
+  connection: local
+  become: false
+
+- ansible.builtin.include_role: # knownoshost
+    name: alex.base.knownoshost
+
+- name: Add User
+  shell: |
+    {{ role_path }}/scripts/add.user.sh "{{ prop_ipaddress }}" "{{ prop_admin_username }}" "{{ prop_admin_password }}"
+    if [[ "$?" != "0" ]]; then
+      echo "Error executing script" 
+    fi
+  args:
+    executable: /bin/bash
+  register: result
+  changed_when: '"Changed" in result.stdout'
+  failed_when: '("Error" in result.stdout) or ("Host key verification failed." in result.stdout)'
+  connection: local
+  become: false
+
+- name: Ensure autologon
+  shell: |
+    {{ role_path }}/scripts/auto.logon.sh "{{ prop_ipaddress }}" "{{ prop_admin_username }}" "{{ prop_admin_password }}" "{{ prop_local_user_ssh_key }}" "{{ prop_local_user_ssh_pub }}"
+    if [[ "$?" != "0" ]]; then
+      echo "Error executing script" 
+    fi
+  args:
+    executable: /bin/bash
+  register: expectresult
+  changed_when: '"Changed" in expectresult.stdout'
+  failed_when: '"Error" in expectresult.stdout'
+  connection: local
+  become: false
+
+- name: Set sudo for user
+  shell: |
+    {{ role_path }}/scripts/sudo.user.sh "{{ prop_ipaddress }}" "{{ prop_admin_username }}" "{{ prop_admin_password }}"
+    if [[ "$?" != "0" ]]; then
+      echo "Error executing script" 
+    fi
+  args:
+    executable: /bin/bash
+  register: expectresult
+  changed_when: '"Changed" in expectresult.stdout'
+  failed_when: '"Error" in expectresult.stdout'
+  connection: local
+  become: false
+
+- name: Remote install python3
+  shell: |
+    {{ role_path }}/scripts/remote.install.python3.sh "{{ prop_ipaddress }}" "{{ prop_admin_username }}" "{{ prop_basename }}"
+    if [[ "$?" != "0" ]]; then
+      echo "Error executing script" 
+    fi
+  args:
+    executable: /bin/bash
+  register: expectresult
+  changed_when: '"Changed" in expectresult.stdout'
+  failed_when: '"Error" in expectresult.stdout'
+  connection: local
+  become: false
+
+- name: install setup tools for venv
+  shell: |
+    /{{ prop_basename }}/python/venv/bin/python3 -m pip install setuptools
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Install systemd-timesyncd to ensure time is in sync
+  apt:
+    name:
+      - systemd-timesyncd
+    state: present
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: sync time
+  shell: |
+    timedatectl set-ntp true
+  register: result
+  changed_when: '"CHANGED" in result.stdout'
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Add user config folder
+  ansible.builtin.file:
+    path: /home/{{ prop_admin_username }}/.config
+    owner: "{{ prop_admin_username }}"
+    group: "{{ prop_admin_groupname }}"
+    mode: '0700'
+    state: directory
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Ensure home data folder exists
+  file:
+    path: "/home/{{ prop_admin_username }}/.{{ prop_basename }}" 
+    state: directory
+    owner: "{{ prop_admin_username }}"
+    group: "{{ prop_admin_groupname }}"
+    mode: 0755
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+
+

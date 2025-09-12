@@ -1,0 +1,28 @@
+---
+
+- name: Install basecommands all
+  apt:
+    name:
+      - pgp
+      - pip
+      - pipx
+      - wget
+      - curl
+      - dnsutils
+      - nmap
+      - net-tools
+      - jq
+      - default-jre
+      - unzip
+    state: present
+    update_cache: yes
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- ansible.builtin.include_role: # dotnet and powershell
+    name: alex.debian13.installmicrosoftpackages
+
+
+

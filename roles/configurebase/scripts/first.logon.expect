@@ -1,0 +1,89 @@
+#!/usr/bin/expect -f
+
+set ipaddress [lindex $argv 0]
+set password [lindex $argv 1]
+set installusername "debian"
+set installpassword "debian"
+
+set timeout 30
+
+spawn ssh -o StrictHostKeyChecking=no $installusername@$ipaddress
+
+expect {
+    "password:" {
+        send -- "$installpassword\r"
+        expect {
+            "Linux" {
+                expect "$installusername@*"
+
+                send -- "passwd\r"
+
+                expect "Current password:"
+                send -- "$installpassword\r"
+
+                expect "New password:"
+                send -- "$password\r"
+
+                expect "Retype new password:"
+                send -- "$password\r"
+
+                expect "$installusername@*"
+                send -- "su\r"
+
+                expect "password"
+                send -- "$installpassword\r"
+
+                expect "root@*"
+                send -- "passwd\r"
+
+                expect "New password:"
+                send -- "$password\r"
+
+                expect "Retype new password:"
+                send -- "$password\r"
+
+                expect "root@*"
+                send -- "rm /etc/ssh/ssh_host*\r"
+
+                expect "root@*"
+                send -- "ls -las /etc/ssh\r"
+
+                expect "root@*"
+                send -- "ssh-keygen -A\r"
+
+                expect "root@*"
+                send -- "systemctl restart sshd\r"
+
+                #expect "root@*"
+                #send -- "ls -las /etc/ssh\r"
+
+                #expect "root@*"
+                #send -- "exit\r"
+
+                #expect "$installusername@*"
+                #send -- "exit\r"
+
+                expect eof
+
+                send_user "**** Changed: Finished Expect: No expire - New password for default user forced\n"
+            }
+            "Permission denied" {
+                send -- "$password\r"
+                expect {
+                    "Last login" {
+
+                        send -- "exit\r"
+
+                        expect eof
+
+                        send_user "**** Finished Expect: New password has previously been set\n"
+                    }
+                    "Permission denied" {
+                        send -- "\x03"
+                        send_user "**** Error: Finished Expect: New password has previously been blocked (I think)\n"
+                    }
+                }
+            }
+        }
+    }
+}

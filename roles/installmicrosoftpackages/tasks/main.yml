@@ -1,0 +1,46 @@
+---
+
+## url https://packages.microsoft.com/debian/13/prod/pool/main/p/
+- name: Install a list of packages
+  apt:
+    deb: "//mnt/sources-dev/deb/microsoftpackages/packages-microsoft-prod.deb"
+    state: present
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+## NOT YET SUPPORTED FOR DEBIAN 13
+# - name: Install a list of packages - dotnet
+#   apt:
+#     name: "{{ packages }}"
+#     state: present
+#     update_cache: yes
+#   vars:
+#     packages:
+#     - libc6
+#     - libgcc-s1
+#     - libgssapi-krb5-2
+#     - libicu76
+#     - libssl3
+#     - libstdc++6
+#     - zlib1g
+#     - dotnet-runtime-9.0  
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+
+## NOT YET SUPPORTED FOR DEBIAN 13
+# - name: Install a list of packages - pwsh
+#   apt:
+#     name: "{{ packages }}"
+#     state: present
+#     update_cache: yes
+#   vars:
+#     packages:
+#     - powershell
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+

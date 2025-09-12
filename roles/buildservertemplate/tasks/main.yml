@@ -1,0 +1,16 @@
+---
+
+- ansible.builtin.include_role:
+    name: alex.debian13.buildvm
+
+- ansible.builtin.include_role:
+    name: alex.debian13.configureserver
+
+- ansible.builtin.include_role:
+    name: alex.debian13.configureos
+
+- ansible.builtin.include_role: # export
+    name: alex.proxmox.exportvm
+
+# - ansible.builtin.include_role: # remove
+#     name: alex.proxmox.removevm

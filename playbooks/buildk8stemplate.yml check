@@ -1,0 +1,13 @@
+## Has not yet been updated for Debian 13
+# ---
+
+# - name: "Playbook: Build Debian 13 K8S Template"
+#   hosts: "{{ args_host }}"
+#   gather_facts: false
+
+#   vars_files:
+#     - /etc/ansible/inventory/vars.yml
+
+#   tasks:
+#     - ansible.builtin.include_role:
+#         name: alex.debian13.buildk8stemplate

@@ -1,0 +1,45 @@
+#!/usr/bin/expect -f
+
+set ipaddress [lindex $argv 0]
+set username [lindex $argv 1]
+set password [lindex $argv 2]
+
+send_user "IPAddress(exp) is $ipaddress\n"
+send_user "Username is $username\n"
+send_user "Password(exp) is $password\n"
+
+set timeout 30
+
+spawn ssh $username@$ipaddress
+
+expect {
+    "Last login" {
+        expect "$username@*"
+
+        send -- "su -\r"
+        expect {
+            "root" {}
+
+            "Password" {
+                send -- "$password\r"
+                expect "root"
+            }
+        }
+
+        expect "root@*"
+        send -- "apt install sudo\r"
+
+        expect "root@*"
+        send -- "sudo su -c 'echo \"$username ALL=\(ALL\) NOPASSWD:ALL\" > /etc/sudoers.d/$username'\r"
+
+        expect "root@*"
+        send -- "exit\r"
+
+        expect "$username@*"
+        send -- "exit\r"
+
+        expect eof
+        send_user "**** Changed: Finished Expect: sudo updated\n"
+    }
+}
+

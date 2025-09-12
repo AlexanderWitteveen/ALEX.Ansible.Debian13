@@ -1,0 +1,17 @@
+---
+
+- name: Schedule cron jobs
+  ansible.builtin.cron:
+    name: "{{ item.name }}"
+    state: present
+    job: "{{ item.job }}"
+    cron_file: "{{ item.file }}"
+    day: "{{ item.day | default(omit) }}"
+    hour: "{{ item.hour | default(omit) }}"
+    minute: "{{ item.minute | default(omit) }}"
+    user: root
+  loop: "{{ prop_cron_jobs | default([]) }}"
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true

@@ -1,0 +1,19 @@
+---
+
+- name: Create local datafolders
+  file:
+    path: "/{{ prop_basename }}/{{ item.name }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop: "{{ prop_datafolder_local | default([]) }}"
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+
+
+
+# - name: Create remote datafolders
