@@ -1,5 +1,11 @@
 ---
 
+- ansible.builtin.include_role: # create datafolders
+    name: alex.debian13.datafolders
+  vars:
+    args_datafolder_local: 
+      - name: docker
+
 - name: Install a list of packages
   apt:
     name: "{{ packages }}"

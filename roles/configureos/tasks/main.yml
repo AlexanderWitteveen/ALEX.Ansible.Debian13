@@ -9,9 +9,6 @@
 - ansible.builtin.include_role: # mount smb shares
     name: alex.debian13.mountsmbshares
 
-- ansible.builtin.include_role: # datafolders
-    name: alex.debian13.datafolders
-
 - ansible.builtin.include_role: # certificates
     name: alex.debian13.certificates
 

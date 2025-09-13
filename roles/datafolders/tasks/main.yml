@@ -7,7 +7,7 @@
     owner: root
     group: root
     mode: 0755
-  loop: "{{ prop_datafolder_local | default([]) }}"
+  loop: "{{ args_datafolder_local | default([]) }}"
   vars:
     ansible_connection: ssh
     ansible_host: "{{ prop_ipaddress }}"
@@ -20,7 +20,7 @@
     owner: root
     group: root
     mode: 0755
-  loop: "{{ prop_datafolder_remote | default([]) }}"
+  loop: "{{ args_datafolder_remote | default([]) }}"
   vars:
     ansible_connection: ssh
     ansible_host: "{{ prop_ipaddress }}"

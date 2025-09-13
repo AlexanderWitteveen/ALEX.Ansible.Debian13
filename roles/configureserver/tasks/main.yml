@@ -36,8 +36,12 @@
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
-- ansible.builtin.include_role: # datafolders
+- ansible.builtin.include_role: # create datafolders
     name: alex.debian13.datafolders
+  vars:
+    args_datafolder_local: 
+      - name: scripts
+      - name: certificates
 
 - ansible.builtin.include_role: # configure smb
     name: alex.debian13.configuresmb
