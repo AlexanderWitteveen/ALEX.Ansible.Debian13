@@ -1,0 +1,22 @@
+---
+
+- ansible.builtin.include_role:
+    name: alex.debian12.buildvm
+
+- ansible.builtin.include_role: # install k3s
+    name: alex.debian12.installk8s
+
+# - ansible.builtin.include_role: # install helm
+#     name: alex.debian12.installhelm
+
+# - ansible.builtin.include_role: # install nerdctl
+#     name: alex.debian12.installnerdctl
+
+# - ansible.builtin.include_role:
+#     name: alex.debian12.configureos
+
+# - ansible.builtin.include_role: # export
+#     name: alex.proxmox.exportvm
+
+# - ansible.builtin.include_role: # remove
+#     name: alex.proxmox.removevm

@@ -13,7 +13,15 @@
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
-
-
-
-# - name: Create remote datafolders
+- name: Create remote datafolders
+  file:
+    path: "/mnt/{{ item.mount }}/{{ item.service }}/{{ prop_hostname }}/{{ item.name }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop: "{{ prop_datafolder_remote | default([]) }}"
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true

@@ -14,12 +14,39 @@
       - jq
       - default-jre
       - unzip
+      - cifs-utils
+      - samba
     state: present
     update_cache: yes
   vars:
     ansible_connection: ssh
     ansible_host: "{{ prop_ipaddress }}"
   become: true
+
+- name: Install pip python package
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    virtualenv: /alex/python/venv
+  loop:
+    - pyyaml
+    - requests
+    - requests-toolbelt   
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- ansible.builtin.include_role: # datafolders
+    name: alex.debian13.datafolders
+
+- ansible.builtin.include_role: # configure smb
+    name: alex.debian13.configuresmb
+
+- ansible.builtin.include_role: # smbshares
+    name: alex.debian13.smbshares
+
+- ansible.builtin.include_role: # mount smb shares
+    name: alex.debian13.mountsmbshares
 
 - ansible.builtin.include_role: # dotnet and powershell
     name: alex.debian13.installmicrosoftpackages

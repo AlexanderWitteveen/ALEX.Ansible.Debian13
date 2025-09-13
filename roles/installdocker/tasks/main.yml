@@ -1,0 +1,89 @@
+---
+
+- name: Install a list of packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+    - ca-certificates 
+    - curl
+    - gnupg
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Add Docker apt repository key.
+  ansible.builtin.get_url:
+    url: "https://download.docker.com/linux/debian/gpg"
+    dest: "/usr/share/keyrings/docker.gpg"
+    mode: '0644'
+    force: true
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Add Debian apt repository.
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/debian/ trixie stable"
+    filename: docker
+    state: present
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Install a list of packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    - apache2-utils
+    - docker-buildx-plugin
+    - docker-compose-plugin
+    - python3-requests
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Copy profile file
+  ansible.builtin.template:
+    src: "deamon.json.j2"
+    dest: "/etc/docker/daemon.json"
+    owner: root
+    group: root
+    mode: 0777
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: restart docker
+  ansible.builtin.service:
+    name: docker
+    state: restarted
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Configure Network
+  shell: |
+    docker network create \
+      --driver=bridge \
+      alex0
+  args:
+    executable: /bin/bash
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+
+

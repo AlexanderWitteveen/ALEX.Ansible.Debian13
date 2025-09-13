@@ -1,0 +1,7 @@
+CREATE DATABASE `{{ args_k3s_database }}`;
+
+GRANT ALL PRIVILEGES ON `{{ args_k3s_database }}`.* TO '{{ args_k3s_admin_username }}'@'%' IDENTIFIED BY '{{ args_k3s_admin_password }}';
+
+FLUSH PRIVILEGES;
+
+

@@ -1,0 +1,40 @@
+---
+
+- name: Remove all docker containers
+  shell: for id in $(docker container ls -a -q); do docker container kill $id; docker container rm $id; echo "changedtrue"; done
+  args:
+    executable: /bin/bash
+  register: taskresult
+  changed_when:
+  - '"changedtrue" in taskresult.stdout'
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+
+- name: Remove all docker images
+  shell: for id in $(docker image ls -q); do docker image rm $id; echo "changedtrue"; done
+  args:
+    executable: /bin/bash
+  register: taskresult
+  changed_when:
+  - '"changedtrue" in taskresult.stdout'
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Remove all docker volumes
+  shell: for id in $(docker volume ls -q); do docker volume rm $id; echo "changedtrue"; done
+  args:
+    executable: /bin/bash
+  register: taskresult
+  changed_when:
+  - '"changedtrue" in taskresult.stdout'
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+  

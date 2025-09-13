@@ -1,6 +1,6 @@
 ---
 
-- name: "Playbook: Test role"
+- name: "Playbook: Build Debian 13 Docker Template"
   hosts: "{{ args_host }}"
   gather_facts: false
 
@@ -9,7 +9,4 @@
 
   tasks:
     - ansible.builtin.include_role:
-        name: alex.debian13.loaddockerimages
-    - ansible.builtin.include_role:
-        name: alex.debian13.installnodered
-
+        name: alex.debian13.builddockertemplate

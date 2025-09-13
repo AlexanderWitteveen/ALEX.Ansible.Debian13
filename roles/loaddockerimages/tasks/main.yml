@@ -1,0 +1,25 @@
+---
+
+# - name: Load docker
+#   shell: for id in $(docker container ls -a -q); do docker container kill $id; docker container rm $id; echo "changedtrue"; done
+#   args:
+#     executable: /bin/bash
+#   register: taskresult
+#   changed_when:
+#   - '"changedtrue" in taskresult.stdout'
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+
+- name: Load docker images
+  shell: |
+    docker image load --input {{ prop_container_sources }}/{{ item.file }}
+  args:
+    executable: /bin/bash
+  loop: "{{ prop_docker_images | default([]) }}"
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true

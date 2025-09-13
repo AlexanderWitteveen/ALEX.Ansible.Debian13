@@ -22,7 +22,7 @@ expect {
         send -- "sudo mkdir /$basename/python -p \r"
 
         expect "$username\@*"
-        send -- "sudo python3 -m venv /$basename/python/venv\r"
+        send -- "sudo python3 -m venv --system-site-packages /$basename/python/venv\r"
 
         expect "$username\@*"
         send -- "echo 'source /$basename/python/venv/bin/activate' >> ~/.bashrc\r"

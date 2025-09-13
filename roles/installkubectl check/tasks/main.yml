@@ -1,0 +1,40 @@
+---
+
+
+- name: Check if kubectl present
+  shell: |
+    kubectl version --client
+    if [ $? != "0" ] ; then
+      echo absent
+    fi
+  args:
+    executable: /bin/bash
+  register: kuberesult
+  changed_when: "false"
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Install kubectl
+  when: '"absent" in kuberesult.stdout'
+  block:
+    - name: Download
+      shell: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      args:
+        executable: /bin/bash
+      vars:
+        ansible_connection: ssh
+        ansible_host: "{{ prop_ipaddress }}"
+      become: true
+
+    - name: Install
+      shell: |
+        install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      args:
+        executable: /bin/bash
+      vars:
+        ansible_connection: ssh
+        ansible_host: "{{ prop_ipaddress }}"
+      become: true

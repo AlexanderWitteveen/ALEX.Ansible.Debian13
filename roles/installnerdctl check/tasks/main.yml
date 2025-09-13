@@ -1,0 +1,35 @@
+---
+
+- name: Ensure all drives are mounted
+  shell: |
+    mount -a
+  args:
+    executable: /bin/bash
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Copy install files
+  ansible.builtin.copy:
+    src: /mnt/sources-dev/bin/nerdctl/2.0.1/nerdctl
+    dest: /usr/local/bin/
+    remote_src: yes
+    mode: '0755'
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Copy config file
+  ansible.builtin.template:
+    src: "nerdctl.toml.j2"
+    dest: "/etc/nerdctl/nerdctl.toml"
+    owner: root
+    group: root
+    mode: 0644
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+

@@ -1,0 +1,113 @@
+---
+
+# - name: get Cluster IP Address
+#   shell: |
+#     getent hosts {{ prop_k3s_server }} | awk '{ print $1 }'
+#   args:
+#     executable: /bin/bash
+#   register: cluster_ip
+#   changed_when: false
+#   vars:
+#     ansible_connection: local
+#   become: true
+
+# - name: Wait for {{ cluster_ip.stdout }} started 
+#   wait_for:
+#     port: 22
+#     host: '{{ cluster_ip.stdout }}'
+#     search_regex: OpenSSH
+#     delay: 1
+#     timeout: 30
+#   register: started
+#   changed_when: false
+#   vars:
+#     ansible_connection: local
+#   become: true
+
+- name: Copy config
+  ansible.builtin.fetch:
+    src: "/etc/rancher/k3s/k3s.yaml"
+    dest: "/etc/rancher/k3s/k3s.yaml"
+    flat: yes
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: save cluster IP
+  shell: sed -i -e 's/127.0.0.1/{{ prop_ipaddress }}/g' "/etc/rancher/k3s/k3s.yaml"
+  args:
+    executable: /bin/bash
+  changed_when: false
+  vars:
+    ansible_connection: local
+  become: true
+
+# - name: Create Config
+#   shell: |
+#     serv=$( cat /tmp/{{ prop_environment }}.config | grep "server: https" )
+#     ca=$( cat /tmp/{{ prop_environment }}.config | grep "certificate-authority-data" )
+#     usercert=$( cat /tmp/{{ prop_environment }}.config | grep "client-certificate-data" )
+#     userkey=$( cat /tmp/{{ prop_environment }}.config | grep "client-key-data" )
+#     echo "apiVersion: v1" > /tmp/kubeconfig
+#     echo "kind: Config" >> /tmp/kubeconfig
+#     echo "preferences: {}" >> /tmp/kubeconfig
+#     echo "current-context: dev-context" >> /tmp/kubeconfig
+#     echo "clusters:" >> /tmp/kubeconfig
+#     echo "- cluster:" >> /tmp/kubeconfig
+#     echo "$ca" >> /tmp/kubeconfig
+#     echo "$serv" >> /tmp/kubeconfig
+#     echo "  name: {{ prop_environment }}-cluster" >> /tmp/kubeconfig
+#     echo "contexts:" >> /tmp/kubeconfig
+#     echo "- context:" >> /tmp/kubeconfig
+#     echo "    cluster: {{ prop_environment }}-cluster" >> /tmp/kubeconfig
+#     echo "    user: {{ prop_environment }}-user" >> /tmp/kubeconfig
+#     echo "  name: {{ prop_environment }}-context" >> /tmp/kubeconfig
+#     echo "users:" >> /tmp/kubeconfig
+#     echo "- name: {{ prop_environment }}-user" >> /tmp/kubeconfig
+#     echo "  user:" >> /tmp/kubeconfig
+#     echo "$usercert" >> /tmp/kubeconfig
+#     echo "$userkey" >> /tmp/kubeconfig
+#   args:
+#     executable: /bin/bash
+#   changed_when: false
+#   vars:
+#     ansible_connection: local
+#   become: true
+
+# - name: Creates directory
+#   file:
+#     path: /etc/rancher/k3s
+#     state: directory
+#     owner: root
+#     group: root
+#     mode: 0777
+#     recurse: yes
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Copy file with owner and permissions
+#   ansible.builtin.copy:
+#     src: /tmp/kubeconfig
+#     dest: /etc/rancher/k3s/config.yaml
+#     owner: root
+#     group: root
+#     mode: '0644'
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Copy profile file
+#   ansible.builtin.template:
+#     src: "profile.k3s.sh.j2"
+#     dest: "/etc/profile.d/profile.k3s.sh"
+#     owner: root
+#     group: root
+#     mode: 0755
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true

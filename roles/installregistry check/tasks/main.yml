@@ -1,0 +1,60 @@
+---
+
+- name: Test k3s installed
+  shell: |
+    echo "-----------------"
+    kubectl version
+    echo "-----------------"
+    kubectl get namespaces
+    echo "-----------------"
+    kubectl get pods
+    echo "-----------------"
+  args:
+    executable: /bin/bash
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Copy k8s file
+  ansible.builtin.template:
+    src: "registry.yml.j2"
+    dest: "~/registry.yml"
+    owner: root
+    group: root
+    mode: 0777
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: install registry
+  shell: |
+    kubectl apply -f ~/registry.yml
+  args:
+    executable: /bin/bash
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Copy registries config file
+  ansible.builtin.template:
+    src: "registries.yaml.j2"
+    dest: "/etc/rancher/k3s/registries.yaml"
+    owner: root
+    group: root
+    mode: 0777
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Restart service
+  ansible.builtin.service:
+    name: k3s
+    state: restarted
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true

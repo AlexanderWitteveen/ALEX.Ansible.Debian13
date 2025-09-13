@@ -1,0 +1,23 @@
+---
+
+- name: Ensure all drives are mounted
+  shell: |
+    mount -a
+  args:
+    executable: /bin/bash
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Copy install files
+  ansible.builtin.copy:
+    src: /mnt/data04/sources/script/oras.1.1.0/oras
+    dest: /usr/local/bin/
+    remote_src: yes
+    mode: '0755'
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+

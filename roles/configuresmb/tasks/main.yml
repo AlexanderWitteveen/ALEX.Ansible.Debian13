@@ -1,0 +1,21 @@
+---
+
+- name: Template a file to /etc/file.conf
+  ansible.builtin.template:
+    src: .smbcred.j2
+    dest: "/home/{{ prop_admin_username }}/.{{ prop_basename }}/.smbcred"
+    owner: "{{ prop_admin_username }}"
+    group: "{{ prop_admin_groupname }}"
+    mode: '0400'
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Set SMB User
+  shell: |
+    (echo "{{ prop_admin_password }}" ; echo "{{ prop_admin_password }}") | smbpasswd -s -a {{ prop_admin_username }}
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true

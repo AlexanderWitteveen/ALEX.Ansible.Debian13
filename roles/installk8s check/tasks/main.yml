@@ -1,0 +1,134 @@
+---
+
+- name: Disable SWAP 1
+  shell: |
+    swapoff -a
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Disable SWAP 2
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+
+
+# - name: Install a list of packages
+#   apt:
+#     name: "{{ packages }}"
+#     state: present
+#   vars:
+#     packages:
+#     - apt-transport-https
+#     - ca-certificates
+#     - curl
+#     - gnupg-agent
+#     - software-properties-common
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Test k3s installed
+#   shell: kubectl version
+#   args:
+#     executable: /bin/bash
+#   register: validateresult
+#   changed_when: 'false'
+#   failed_when: 'false'
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Install k3s
+# ##  shell: 'curl -sfL https://get.k3s.io | sh -s - server --datastore-endpoint="mysql://{{ param_k3s_admin_username }}:{{ param_k3s_admin_password }}@tcp({{ param_hostname }}:3306)/{{ param_k3s_database }}" --no-deploy servicelb --no-deploy traefik'
+#   shell: |
+#     curl -sfL https://get.k3s.io | sh -
+#     echo "finished"
+#   args:
+#     executable: /bin/bash
+#   when: '"kubectl: command not found" in validateresult.stderr'
+# ##  register: result
+# ##  changed_when:
+# ##  - 'not ("Found existing file" in result.stderr)'
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: chmod k3s
+#   shell: |
+#     chmod 660 /etc/rancher/k3s/k3s.yaml
+#   args:
+#     executable: /bin/bash
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Copy profile file
+#   ansible.builtin.template:
+#     src: "profile.k3s.sh.j2"
+#     dest: "/etc/profile.d/profile.k3s.sh"
+#     owner: root
+#     group: root
+#     mode: 0777
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Download keyring
+#   shell: curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
+#   args:
+#     executable: /bin/bash
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Add apt source
+#   shell: echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
+#   args:
+#     executable: /bin/bash
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Install a list of packages
+#   apt:
+#     name: "{{ packages }}"
+#     state: present
+#     update_cache: yes
+#   vars:
+#     packages:
+#     - helm
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Install python package
+#   ansible.builtin.pip:
+#     name: pyyaml
+#     break_system_packages: true
+#   vars:
+#     ansible_connection: ssh
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# # - name: Install Python modules
+# #   community.general.pipx:
+# #     name: pyyaml
+# #   vars:
+# #     ansible_connection: ssh
+# #     ansible_host: "{{ prop_ipaddress }}"
+# #   become: true
+
