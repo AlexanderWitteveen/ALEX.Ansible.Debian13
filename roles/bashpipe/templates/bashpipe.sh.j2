@@ -1,5 +1,8 @@
 #!/bin/bash
 
 while true; do 
-    eval "$(cat /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe)" &> /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log
+    eval "$(cat /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe)" &>> /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log
+    tail -n 10 /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log > /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log.tmp
+    mv /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log.tmp /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log
 done
+
