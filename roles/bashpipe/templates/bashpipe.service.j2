@@ -1,0 +1,9 @@
+[Unit]
+Description=Execute bash scripts from pipe
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /{{ prop_basename }}/bashpipe/bashpipe.sh
+
+[Install]
+WantedBy=multi-user.target

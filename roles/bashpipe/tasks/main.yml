@@ -1,0 +1,38 @@
+---
+
+- ansible.builtin.include_role: # create datafolders
+    name: alex.debian13.datafolders
+  vars:
+    args_datafolder_local: 
+      - name: bashpipe
+    args_datafolder_remote: []
+
+- name: Upload files
+  ansible.builtin.template:
+    src: "{{ item.source }}"
+    dest: "{{ item.target }}"
+    owner: "{{ prop_admin_username }}"
+    group: "{{ prop_admin_groupname }}"
+    mode: '0777'
+  loop:
+    - source: bashpipe.service.j2
+      target: "/{{ prop_basename }}/bashpipe/bashpipe.service"
+    - source: bashpipe.sh.j2
+      target: "/{{ prop_basename }}/bashpipe/bashpipe.sh"
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: create pipe
+  shell: |
+    mkfifo --mode=0666 /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe
+    sudo ln -s "/{{ prop_basename }}/bashpipe/bashpipe.service" /etc/systemd/system
+    sudo systemctl enable bashpipe.service
+    sudo systemctl start bashpipe.service
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+

@@ -9,7 +9,5 @@
 
   tasks:
     - ansible.builtin.include_role:
-        name: alex.debian13.loaddockerimages
-    - ansible.builtin.include_role:
-        name: alex.debian13.installnodered
+        name: alex.debian13.bashpipe
 

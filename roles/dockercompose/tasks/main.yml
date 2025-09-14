@@ -1,0 +1,44 @@
+---
+
+- name: run scripts
+  shell: |
+    {{ item }}
+  args:
+    executable: /bin/bash
+  loop: "{{ args_run_scripts }}"
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Load docker images
+  shell: |
+    docker image load --input {{ prop_container_sources }}/{{ item.file }}
+  args:
+    executable: /bin/bash
+  loop: "{{ args_docker_images }}"
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: compose create
+  shell: |
+    docker compose -f "{{ args_compose_file }}" create
+  args:
+    executable: /bin/bash
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: compose start
+  shell: |
+    docker compose -f "{{ args_compose_file }}" start
+  args:
+    executable: /bin/bash
+  vars:
+    ansible_connection: ssh
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+

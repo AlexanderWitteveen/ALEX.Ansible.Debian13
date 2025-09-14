@@ -1,0 +1,5 @@
+#!/bin/bash
+
+while true; do 
+    eval "$(cat /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe)" &> /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log
+done
