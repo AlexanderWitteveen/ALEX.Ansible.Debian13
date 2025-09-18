@@ -5,7 +5,7 @@
     {{ item }}
   args:
     executable: /bin/bash
-  loop: "{{ args_run_scripts }}"
+  loop: "{{ args_run_scripts | default([]) }}"
   vars:
     ansible_connection: ssh
     ansible_host: "{{ prop_ipaddress }}"

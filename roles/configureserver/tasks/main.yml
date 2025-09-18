@@ -16,6 +16,7 @@
       - unzip
       - cifs-utils
       - samba
+      - zip
     state: present
     update_cache: yes
   vars:
