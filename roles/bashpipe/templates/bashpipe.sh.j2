@@ -1,14 +1,7 @@
 #!/bin/bash
 
 while true; do 
-    if read line; then
-        eval $line
-    else
-        sleep 1
-        continue
-    fi
-    # eval "$(cat /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe)" &>> /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log
-    # tail -n 10 /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log > /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log.tmp
-    # mv /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log.tmp /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log
+    line=$tail -n 1 /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe
+    eval "$line" &>> /{{ prop_basename }}/bashpipe/{{ prop_basename }}pipe.log
 done
 
