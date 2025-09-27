@@ -1,7 +1,7 @@
 ---
 
 - ansible.builtin.include_role:
-    name: alex.debian13.buildvm
+    name: alex.debian13.rebuildvm
 
 - ansible.builtin.include_role: # install docker
     name: alex.debian13.installdocker
