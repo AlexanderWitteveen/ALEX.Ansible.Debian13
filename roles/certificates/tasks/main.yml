@@ -119,6 +119,24 @@
         ansible_host: "{{ prop_ipaddress }}"
       become: true
 
+    - name: Change file ownership, group and permissions
+      ansible.builtin.file:
+        path: /{{ prop_basename }}/certificates/host.key
+        mode: '0644'
+      vars:
+        ansible_connection: ssh
+        ansible_host: "{{ prop_ipaddress }}"
+      become: true
+
+    - name: Change file ownership, group and permissions
+      ansible.builtin.file:
+        path: /{{ prop_basename }}/certificates/host.pub
+        mode: '0644'
+      vars:
+        ansible_connection: ssh
+        ansible_host: "{{ prop_ipaddress }}"
+      become: true
+
     - name: create certificate signing request
       shell: |
         step certificate create \
@@ -179,7 +197,7 @@
         dest: "/{{ prop_basename }}/certificates/host.cer"
         owner: root
         group: root
-        mode: 0755
+        mode: 0644
       vars:
         ansible_connection: ssh
         ansible_host: "{{ prop_ipaddress }}"
