@@ -1,0 +1,9 @@
+---
+
+- name: "Playbook: Config WSL"
+  hosts: "{{ args_host }}"
+  gather_facts: false
+
+  tasks:
+    - ansible.builtin.include_role:
+        name: alex.debian13.configwsl

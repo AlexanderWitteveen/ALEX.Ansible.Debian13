@@ -1,0 +1,4 @@
+---
+
+- ansible.builtin.include_role: # config bashrc
+    name: alex.debian13.configbash

@@ -76,6 +76,9 @@
   connection: local
   become: false
 
+- ansible.builtin.include_role: # config bashrc
+    name: alex.debian13.configbash
+
 - name: install setup tools for venv
   shell: |
     /{{ prop_basename }}/python/venv/bin/python3 -m pip install setuptools

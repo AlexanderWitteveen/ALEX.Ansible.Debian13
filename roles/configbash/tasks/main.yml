@@ -1,0 +1,42 @@
+---
+
+- name: Create local datafolders
+  file:
+    path: "/{{ prop_basename }}/bash"
+    state: directory
+    owner: root
+    group: root
+    mode: 0777
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Copy bash script
+  ansible.builtin.template:
+    src: "bash.sh.j2"
+    dest: "/{{ prop_basename }}/bash/bash.sh"
+    owner: root
+    group: root
+    mode: 0755
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: update bashrc
+  shell: |
+    if [[ $(cat {{ item }}/.bashrc | grep "ALEX.Bash" | wc -l ) == 0 ]] ; then
+      echo ". /{{ prop_basename }}/bash/bash.sh  # ALEX.Bash " >> {{ item }}/.bashrc
+    fi
+  args:
+    executable: /bin/bash
+  loop:
+    - "/root"
+    - "/home/{{ prop_admin_username }}"
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+
