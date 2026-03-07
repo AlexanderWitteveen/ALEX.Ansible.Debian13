@@ -8,7 +8,7 @@
     group: root
     mode: 0755
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -21,7 +21,7 @@
     mode: 0755
   register: cacertresult1
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -39,7 +39,7 @@
   changed_when:
   - '"changedtrue" in cacertresult2.stdout'
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -50,21 +50,21 @@
     executable: /bin/bash
   when: cacertresult1.changed or ("changedtrue" in cacertresult2.stdout)
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
-# - name: Ensure certificate folder exists
-#   file:
-#     path: "/{{ prop_basename }}/certificates"
-#     state: directory
-#     owner: root
-#     group: root
-#     mode: 0755
-#   vars:
-#     ansible_connection: ssh
-#     ansible_host: "{{ prop_ipaddress }}"
-#   become: true
+- name: Ensure certificate folder exists
+  file:
+    path: "/{{ prop_basename }}/certificates"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
 
 - name: Install a list of packages x64
   apt:
@@ -72,7 +72,7 @@
     state: present
   when: 'prop_arch == "x64"'
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -82,7 +82,7 @@
     state: present
   when: 'prop_arch == "a64"'
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -97,7 +97,7 @@
   register: certresult
   changed_when: "false"
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -115,7 +115,7 @@
       args:
         executable: /bin/bash
       vars:
-        ansible_connection: ssh
+        ansible_connection: "{{ prop_ansible_connection }}"
         ansible_host: "{{ prop_ipaddress }}"
       become: true
 
@@ -124,7 +124,7 @@
         path: /{{ prop_basename }}/certificates/host.key
         mode: '0644'
       vars:
-        ansible_connection: ssh
+        ansible_connection: "{{ prop_ansible_connection }}"
         ansible_host: "{{ prop_ipaddress }}"
       become: true
 
@@ -133,7 +133,7 @@
         path: /{{ prop_basename }}/certificates/host.pub
         mode: '0644'
       vars:
-        ansible_connection: ssh
+        ansible_connection: "{{ prop_ansible_connection }}"
         ansible_host: "{{ prop_ipaddress }}"
       become: true
 
@@ -161,7 +161,7 @@
       args:
         executable: /bin/bash
       vars:
-        ansible_connection: ssh
+        ansible_connection: "{{ prop_ansible_connection }}"
         ansible_host: "{{ prop_ipaddress }}"
       become: true
 
@@ -171,7 +171,7 @@
         dest: "/tmp/{{ prop_hostname }}.csr"
         flat: yes
       vars:
-        ansible_connection: ssh
+        ansible_connection: "{{ prop_ansible_connection }}"
         ansible_host: "{{ prop_ipaddress }}"
       become: true
 
@@ -199,7 +199,7 @@
         group: root
         mode: 0644
       vars:
-        ansible_connection: ssh
+        ansible_connection: "{{ prop_ansible_connection }}"
         ansible_host: "{{ prop_ipaddress }}"
       become: true
 
@@ -212,6 +212,6 @@
     group: "{{ prop_admin_groupname }}"
     mode: 0700
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true

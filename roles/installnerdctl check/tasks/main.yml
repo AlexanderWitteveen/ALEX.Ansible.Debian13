@@ -6,7 +6,7 @@
   args:
     executable: /bin/bash
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -17,7 +17,7 @@
     remote_src: yes
     mode: '0755'
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -29,7 +29,7 @@
     group: root
     mode: 0644
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 

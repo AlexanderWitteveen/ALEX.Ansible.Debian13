@@ -9,7 +9,7 @@
     mode: 0777
   loop: "{{ args_datafolder_local | default([]) }}"
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -22,6 +22,6 @@
     mode: 0777
   loop: "{{ args_datafolder_remote | default([]) }}"
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true

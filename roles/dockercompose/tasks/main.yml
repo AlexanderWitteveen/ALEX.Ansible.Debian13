@@ -7,7 +7,7 @@
     executable: /bin/bash
   loop: "{{ args_run_scripts | default([]) }}"
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -18,7 +18,7 @@
     executable: /bin/bash
   loop: "{{ args_docker_images }}"
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -28,7 +28,7 @@
   args:
     executable: /bin/bash
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -38,7 +38,7 @@
   args:
     executable: /bin/bash
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 

@@ -26,6 +26,6 @@
   loop: "{{ prop_smb_shares }}"
   changed_when: '"CHANGED" in result.stdout'
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true

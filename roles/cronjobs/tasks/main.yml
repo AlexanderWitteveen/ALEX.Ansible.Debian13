@@ -10,6 +10,6 @@
     minute: "{{ item.minute | default(omit) }}"
   loop: "{{ prop_cron_jobs | default([]) }}"
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true

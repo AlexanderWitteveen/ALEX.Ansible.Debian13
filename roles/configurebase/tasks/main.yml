@@ -83,7 +83,7 @@
   shell: |
     /{{ prop_basename }}/python/venv/bin/python3 -m pip install setuptools
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -93,7 +93,7 @@
       - systemd-timesyncd
     state: present
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -103,7 +103,7 @@
   register: result
   changed_when: '"CHANGED" in result.stdout'
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -115,7 +115,7 @@
     mode: '0700'
     state: directory
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -127,7 +127,7 @@
     group: "{{ prop_admin_groupname }}"
     mode: 0755
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 

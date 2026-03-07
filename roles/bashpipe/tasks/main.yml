@@ -20,7 +20,7 @@
     - source: bashpipe.sh.j2
       target: "/{{ prop_basename }}/bashpipe/bashpipe.sh"
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -31,7 +31,7 @@
     sudo systemctl enable bashpipe.service
     sudo systemctl start bashpipe.service
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 

@@ -20,9 +20,10 @@
     state: present
     update_cache: yes
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
+
 
 - name: Install pip python package
   ansible.builtin.pip:
@@ -33,7 +34,7 @@
     - requests
     - requests-toolbelt   
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 

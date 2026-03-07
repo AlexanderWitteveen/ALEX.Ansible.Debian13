@@ -6,7 +6,7 @@
     deb: "//mnt/sources-dev/deb/microsoftpackages/packages-microsoft-prod.deb"
     state: present
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -26,7 +26,7 @@
 #     - libstdc++6
 #     - zlib1g
 #     - dotnet-runtime-9.0  
-#     ansible_connection: ssh
+#     ansible_connection: "{{ prop_ansible_connection }}"
 #     ansible_host: "{{ prop_ipaddress }}"
 #   become: true
 
@@ -40,7 +40,7 @@
 #   vars:
 #     packages:
 #     - powershell
-#     ansible_connection: ssh
+#     ansible_connection: "{{ prop_ansible_connection }}"
 #     ansible_host: "{{ prop_ipaddress }}"
 #   become: true
 

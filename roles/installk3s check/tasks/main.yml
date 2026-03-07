@@ -11,7 +11,7 @@
     - curl
     - gnupg-agent
     - software-properties-common
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -23,7 +23,7 @@
   changed_when: 'false'
   failed_when: 'false'
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -39,7 +39,7 @@
 ##  changed_when:
 ##  - 'not ("Found existing file" in result.stderr)'
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -49,7 +49,7 @@
   args:
     executable: /bin/bash
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -61,7 +61,7 @@
     group: root
     mode: 0777
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -70,7 +70,7 @@
   args:
     executable: /bin/bash
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -79,7 +79,7 @@
   args:
     executable: /bin/bash
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -91,7 +91,7 @@
   vars:
     packages:
     - helm
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -100,7 +100,7 @@
     name: pyyaml
     break_system_packages: true
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -108,7 +108,7 @@
 #   community.general.pipx:
 #     name: pyyaml
 #   vars:
-#     ansible_connection: ssh
+#     ansible_connection: "{{ prop_ansible_connection }}"
 #     ansible_host: "{{ prop_ipaddress }}"
 #   become: true
 

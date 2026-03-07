@@ -2,3 +2,183 @@
 
 - ansible.builtin.include_role: # config bashrc
     name: alex.debian13.configbash
+
+- name: Install a list of packages
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+    - curl
+    - jq
+    - pip
+    - expect
+    - git
+    - cifs-utils
+    - nmap
+    - xorriso
+    - libssl3
+    - dnsutils
+    - apt-transport-https
+    - curl
+    - wget
+    # - net-utils
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Install a list of python packages
+  ansible.builtin.pip:
+    name: "{{ packages }}"
+    state: present
+  environment:
+    PIP_BREAK_SYSTEM_PACKAGES: 1
+  vars:
+    packages:
+    - pyyaml
+    - docker
+    - 'fastapi[all]'
+    - 'pymongo[srv]'
+    - python-dotenv
+    - requests_toolbelt
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+# - name: Ensure alex folder exists
+#   file:
+#     path: "/home/alex/.alex"
+#     state: directory
+#     owner: root
+#     group: root
+#     mode: 0777
+#   vars:
+#     ansible_connection: "{{ prop_ansible_connection }}"
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Ensure alex folder exists
+#   file:
+#     path: "/root/.alex"
+#     state: directory
+#     owner: root
+#     group: root
+#     mode: 0777
+#   vars:
+#     ansible_connection: "{{ prop_ansible_connection }}"
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+- name: Template a file to /etc/file.conf
+  ansible.builtin.template:
+    src: .smbcred.j2
+    dest: "/home/{{ prop_admin_username }}/.{{ prop_basename }}/.smbcred"
+    owner: "{{ prop_admin_username }}"
+    group: "{{ prop_admin_groupname }}"
+    mode: '0400'
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: Mount SMB volume
+  ansible.posix.mount:
+    src: "{{ item.source }}"
+    path: "{{ item.path }}"
+    opts: 'rw,auto,vers=3,file_mode=0777,dir_mode=0777,dom=WORKGROUP,credentials=/home/{{ prop_admin_username }}/.{{ prop_basename }}/.smbcred'
+    fstype: cifs
+    state: mounted
+  loop: "{{ prop_smb_mounts }}"
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- name: ensure all mounts are mounted
+  shell: |
+    mount -a
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+# - name: Install Step CLI
+#   apt:
+#     deb: https://dl.smallstep.com/gh-release/cli/docs-ca-install/v0.24.2/step-cli_0.24.2_amd64.deb
+#   vars:
+#     ansible_connection: "{{ prop_ansible_connection }}"
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+- name: Install Github CLI
+  apt:
+    deb: /mnt/sources-dev/deb/gh/gh_2.48.0_linux_amd64.deb
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+# - name: Install Mongosh
+#   apt:
+#     deb: /mnt/sources-dev/deb/mongodb/mongodb-mongosh_2.2.6_amd64.deb
+#   vars:
+#     ansible_connection: "{{ prop_ansible_connection }}"
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Copy install Oras
+#   ansible.builtin.copy:
+#     src: /mnt/sources-dev/script/oras.1.1.0/oras
+#     dest: /usr/local/bin/
+#     remote_src: yes
+#     mode: '0755'
+#   vars:
+#     ansible_connection: "{{ prop_ansible_connection }}"
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Copy install Kubectl
+#   ansible.builtin.copy:
+#     src: /mnt/sources-dev/bin/kubectl/v1.31.3/kubectl
+#     dest: /usr/local/bin/
+#     remote_src: yes
+#     mode: '0755'
+#   vars:
+#     ansible_connection: "{{ prop_ansible_connection }}"
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Download keyring (helm)
+#   shell: curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
+#   args:
+#     executable: /bin/bash
+#   vars:
+#     ansible_connection: "{{ prop_ansible_connection }}"
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+# - name: Add apt source (helm)
+#   shell: echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
+#   args:
+#     executable: /bin/bash
+#   vars:
+#     ansible_connection: "{{ prop_ansible_connection }}"
+#     ansible_host: "{{ prop_ipaddress }}"
+#   become: true
+
+
+#### TODO #####
+# - ansible.builtin.include_role: # certificates
+#     name: alex.wsl.certificates
+
+- name: Install Proxmox Auto Install Assistant
+  apt:
+    deb: /mnt/sources-dev/deb/proxmox/proxmox-auto-install-assistant_8.4.6_amd64.deb
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_ipaddress }}"
+  become: true
+
+- ansible.builtin.include_role:
+    name: alex.debian13.certificates

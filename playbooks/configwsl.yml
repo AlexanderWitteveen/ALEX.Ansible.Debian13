@@ -4,6 +4,26 @@
   hosts: "{{ args_host }}"
   gather_facts: false
 
+  vars:
+    prop_smb_mounts:
+      - source: //10.10.10.42/sources-dev
+        path: /mnt/sources-dev
+      - source: //10.10.10.42/build-dev
+        path: /mnt/build-dev
+      - source: //10.10.10.46/infrastructure-prod
+        path: /mnt/infrastructure-prod
+      - source: //10.10.10.42/data
+        path: /mnt/data-a1142
+      - source: //10.10.10.43/data
+        path: /mnt/data-a1143
+      - source: //10.10.10.44/data
+        path: /mnt/data-a1144
+      - source: //10.10.10.46/data
+        path: /mnt/data-a1146
+      - source: //10.10.10.47/data
+        path: /mnt/data-a1147
+
+
   tasks:
     - ansible.builtin.include_role:
         name: alex.debian13.configwsl

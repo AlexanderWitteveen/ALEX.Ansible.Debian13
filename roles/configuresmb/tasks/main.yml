@@ -8,7 +8,7 @@
     group: "{{ prop_admin_groupname }}"
     mode: '0400'
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -16,6 +16,6 @@
   shell: |
     (echo "{{ prop_admin_password }}" ; echo "{{ prop_admin_password }}") | smbpasswd -s -a {{ prop_admin_username }}
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true

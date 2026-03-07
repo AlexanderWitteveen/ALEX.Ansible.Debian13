@@ -12,7 +12,7 @@
   register: kuberesult
   changed_when: "false"
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -25,7 +25,7 @@
       args:
         executable: /bin/bash
       vars:
-        ansible_connection: ssh
+        ansible_connection: "{{ prop_ansible_connection }}"
         ansible_host: "{{ prop_ipaddress }}"
       become: true
 
@@ -35,6 +35,6 @@
       args:
         executable: /bin/bash
       vars:
-        ansible_connection: ssh
+        ansible_connection: "{{ prop_ansible_connection }}"
         ansible_host: "{{ prop_ipaddress }}"
       become: true

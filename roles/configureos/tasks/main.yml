@@ -20,7 +20,7 @@
     name: "{{ prop_hostname }}"
   register: hostnameresult
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
@@ -28,7 +28,7 @@
   reboot:
   when: hostnameresult.changed
   vars:
-    ansible_connection: ssh
+    ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
