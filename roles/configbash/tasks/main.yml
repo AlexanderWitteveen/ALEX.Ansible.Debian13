@@ -2,11 +2,14 @@
 
 - name: Create local datafolders
   file:
-    path: "/{{ prop_basename }}/bash"
+    path: "{{ item }}"
     state: directory
     owner: root
     group: root
     mode: 0777
+  loop:
+    - "/{{ prop_basename }}/bash"
+    - "/{{ prop_basename }}/bash/scripts"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"
@@ -14,11 +17,16 @@
 
 - name: Copy bash script
   ansible.builtin.template:
-    src: "bash.sh.j2"
-    dest: "/{{ prop_basename }}/bash/bash.sh"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: 0755
+  loop:
+    - src: "bash.sh.j2"
+      dest: "/{{ prop_basename }}/bash/bash.sh"
+    - src: "test.sh.j2"
+      dest: "/{{ prop_basename }}/bash/scripts/test.sh"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_ipaddress }}"

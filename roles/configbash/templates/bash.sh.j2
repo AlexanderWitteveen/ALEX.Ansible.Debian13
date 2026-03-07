@@ -1,4 +1,10 @@
 #!/bin/bash
 
 echo "ALEX Bash configuration"
-export ANSIBLE_CONFIG=/mnt/data-a1146/infrastructure-prod/configuration/ansible/ansible.cfg
+
+for f in $(ls -d $(dirname $BASH_SOURCE)/scripts/*.sh)
+do
+    . $f
+done
+
+

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo "Config Debian 13 - Set Properties"
+echo -n "enter admin username: "
+read -e prop_admin_username
+
+echo -n "enter admin password: "
+read -e -s prop_admin_password
+
+echo "Config Debian 13 - Set root password"
+
+echo "debian" | su root -l -c "echo \"root:$prop_admin_password\" | chpasswd"
+
+echo "$prop_admin_password" | su root -l -c "useradd -m $prop_admin_username --gid adm --shell /bin/bash"
+echo "$prop_admin_password" | su root -l -c "usermod -a -G adm,sudo,plugdev,root $prop_admin_username"
+echo "$prop_admin_password" | su root -l -c "echo \"$prop_admin_username:$prop_admin_password\" | chpasswd"
+
+mkdir -m 700 /home/$prop_admin_username/.ssh
+chown $prop_admin_username:$prop_admin_username /home/$prop_admin_username/.ssh
+###
+### TODO - add public key to authorized_keys
+###
+
+
+
+echo "Config Debian 13 - Finish"
+
