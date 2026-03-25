@@ -6,5 +6,5 @@
 - ansible.builtin.include_role:
     name: alex.proxmox.rebuildvm
 
-- ansible.builtin.include_role: # configureos
-    name: alex.debian13.configureos
+# - ansible.builtin.include_role: # configureos
+#     name: alex.debian13.configureos
