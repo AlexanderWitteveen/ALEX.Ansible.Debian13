@@ -32,4 +32,6 @@
     ansible_host: "{{ prop_ipaddress }}"
   become: true
 
+- ansible.builtin.include_role: # zabbix
+    name: alex.zabbix.installzabbixagent
 

@@ -4,6 +4,9 @@
     name: alex.vyos.registerclient
 
 - ansible.builtin.include_role:
+    name: alex.zabbix.registerclient
+
+- ansible.builtin.include_role:
     name: alex.proxmox.rebuildvm
 
 - ansible.builtin.include_role:
