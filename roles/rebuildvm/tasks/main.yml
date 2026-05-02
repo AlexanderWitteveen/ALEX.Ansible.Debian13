@@ -5,6 +5,7 @@
 
 - ansible.builtin.include_role:
     name: alex.zabbix.registerclient
+  when: not (prop_iszabbixserver | default(false))
 
 - ansible.builtin.include_role:
     name: alex.proxmox.rebuildvm
