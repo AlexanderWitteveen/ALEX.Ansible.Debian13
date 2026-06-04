@@ -10,7 +10,7 @@
   loop: "{{ args_datafolder_local | default([]) }}"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Create remote datafolders
@@ -23,5 +23,5 @@
   loop: "{{ args_datafolder_remote | default([]) }}"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
