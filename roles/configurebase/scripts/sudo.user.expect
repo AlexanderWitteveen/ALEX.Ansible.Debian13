@@ -27,6 +27,9 @@ expect {
         }
 
         expect "root@*"
+        send -- "apt update\r"
+
+        expect "root@*"
         send -- "apt install sudo\r"
 
         expect "root@*"

@@ -9,7 +9,7 @@
   - '"changedtrue" in taskresult.stdout'
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 
@@ -22,7 +22,7 @@
   - '"changedtrue" in taskresult.stdout'
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Remove all docker volumes
@@ -34,7 +34,7 @@
   - '"changedtrue" in taskresult.stdout'
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
   

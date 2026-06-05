@@ -8,7 +8,7 @@
   loop: "{{ args_run_scripts | default([]) }}"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Load docker images
@@ -19,7 +19,7 @@
   loop: "{{ args_docker_images }}"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: compose create
@@ -29,7 +29,7 @@
     executable: /bin/bash
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: compose start
@@ -39,6 +39,6 @@
     executable: /bin/bash
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 

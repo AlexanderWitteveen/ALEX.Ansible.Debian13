@@ -7,7 +7,7 @@
     state: present
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 ## NOT YET SUPPORTED FOR DEBIAN 13
@@ -27,7 +27,7 @@
 #     - zlib1g
 #     - dotnet-runtime-9.0  
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 
@@ -41,6 +41,6 @@
 #     packages:
 #     - powershell
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 

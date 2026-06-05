@@ -16,7 +16,7 @@
     - curl
     - gnupg
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Add Docker apt repository key.
@@ -27,7 +27,7 @@
     force: true
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Add Debian apt repository.
@@ -37,7 +37,7 @@
     state: present
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Install a list of packages
@@ -55,7 +55,7 @@
     - docker-compose-plugin
     - python3-requests
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Copy profile file
@@ -67,7 +67,7 @@
     mode: 0777
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: restart docker
@@ -76,7 +76,7 @@
     state: restarted
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Configure Network
@@ -88,7 +88,7 @@
     executable: /bin/bash
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 

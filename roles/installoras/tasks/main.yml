@@ -7,7 +7,7 @@
 #     executable: /bin/bash
 #   vars:
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 - name: Copy install files
@@ -18,6 +18,6 @@
     mode: '0755'
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 

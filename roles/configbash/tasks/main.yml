@@ -12,7 +12,7 @@
     - "/{{ prop_basename }}/bash/scripts"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Copy bash script
@@ -29,7 +29,7 @@
       dest: "/{{ prop_basename }}/bash/scripts/test.sh"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: update bashrc
@@ -44,7 +44,7 @@
     - "/home/{{ prop_admin_username }}"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 

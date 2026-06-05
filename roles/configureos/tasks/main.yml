@@ -17,11 +17,11 @@
 
 - name: Set a hostname
   ansible.builtin.hostname:
-    name: "{{ prop_hostname }}"
+    name: "{{ prop_host.hostname }}"
   register: hostnameresult
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Conditionally reboot the machine with all defaults
@@ -29,8 +29,11 @@
   when: hostnameresult.changed
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
+
+- debug:
+    var: prop_zabbix
 
 - ansible.builtin.include_role: # zabbix
     name: alex.zabbix.installzabbixagent

@@ -9,7 +9,7 @@
     mode: '0400'
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Set SMB User
@@ -17,5 +17,5 @@
     (echo "{{ prop_admin_password }}" ; echo "{{ prop_admin_password }}") | smbpasswd -s -a {{ prop_admin_username }}
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true

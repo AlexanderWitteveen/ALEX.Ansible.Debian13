@@ -15,7 +15,7 @@
       target: "/{{ prop_basename }}/nginx/html/config.debian.sh"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 

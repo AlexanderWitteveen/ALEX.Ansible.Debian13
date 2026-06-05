@@ -9,7 +9,7 @@
     - apt-transport-https
     - curl
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Download keyring
@@ -18,7 +18,7 @@
     executable: /bin/bash
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Add apt source
@@ -27,7 +27,7 @@
     executable: /bin/bash
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Install a list of packages
@@ -39,7 +39,7 @@
     packages:
     - helm
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 # - name: Install pip python package
@@ -49,7 +49,7 @@
 #     - pyyaml
 #   vars:
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 

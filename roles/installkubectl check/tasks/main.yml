@@ -13,7 +13,7 @@
   changed_when: "false"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Install kubectl
@@ -26,7 +26,7 @@
         executable: /bin/bash
       vars:
         ansible_connection: "{{ prop_ansible_connection }}"
-        ansible_host: "{{ prop_ipaddress }}"
+        ansible_host: "{{ prop_host.ipaddress }}"
       become: true
 
     - name: Install
@@ -36,5 +36,5 @@
         executable: /bin/bash
       vars:
         ansible_connection: "{{ prop_ansible_connection }}"
-        ansible_host: "{{ prop_ipaddress }}"
+        ansible_host: "{{ prop_host.ipaddress }}"
       become: true

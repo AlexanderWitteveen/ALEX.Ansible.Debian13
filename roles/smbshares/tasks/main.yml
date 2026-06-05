@@ -1,5 +1,16 @@
 ---
 
+- debug:
+    var: prop_os
+
+- debug:
+    var: prop_smb_shares
+  failed_when: false
+
+- debug:
+    var: prop_os.smb_shares
+  failed_when: false
+
 - name: add smb share
   shell: |
     #echo "Path: {{ item.name }}"
@@ -23,9 +34,9 @@
       echo "CHANGED"
     fi
   register: result
-  loop: "{{ prop_smb_shares }}"
+  loop: "{{ prop_os.smb_shares | default([]) }}"
   changed_when: '"CHANGED" in result.stdout'
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true

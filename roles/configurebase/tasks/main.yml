@@ -5,7 +5,7 @@
 
 - name: First logon
   shell: |
-    {{ role_path }}/scripts/first.logon.sh "{{ prop_ipaddress }}" "{{ prop_admin_password }}"
+    {{ role_path }}/scripts/first.logon.sh "{{ prop_host.ipaddress }}" "{{ prop_admin_password }}"
     if [[ "$?" != "0" ]]; then
       echo "Error executing script" 
     fi
@@ -22,7 +22,7 @@
 
 - name: Add User
   shell: |
-    {{ role_path }}/scripts/add.user.sh "{{ prop_ipaddress }}" "{{ prop_admin_username }}" "{{ prop_admin_password }}"
+    {{ role_path }}/scripts/add.user.sh "{{ prop_host.ipaddress }}" "{{ prop_admin_username }}" "{{ prop_admin_password }}"
     if [[ "$?" != "0" ]]; then
       echo "Error executing script" 
     fi
@@ -36,7 +36,7 @@
 
 - name: Ensure autologon
   shell: |
-    {{ role_path }}/scripts/auto.logon.sh "{{ prop_ipaddress }}" "{{ prop_admin_username }}" "{{ prop_admin_password }}" "{{ prop_local_user_ssh_key }}" "{{ prop_local_user_ssh_pub }}"
+    {{ role_path }}/scripts/auto.logon.sh "{{ prop_host.ipaddress }}" "{{ prop_admin_username }}" "{{ prop_admin_password }}" "{{ prop_local_user_ssh_key }}" "{{ prop_local_user_ssh_pub }}"
     if [[ "$?" != "0" ]]; then
       echo "Error executing script" 
     fi
@@ -50,7 +50,7 @@
 
 - name: Set sudo for user
   shell: |
-    {{ role_path }}/scripts/sudo.user.sh "{{ prop_ipaddress }}" "{{ prop_admin_username }}" "{{ prop_admin_password }}"
+    {{ role_path }}/scripts/sudo.user.sh "{{ prop_host.ipaddress }}" "{{ prop_admin_username }}" "{{ prop_admin_password }}"
     if [[ "$?" != "0" ]]; then
       echo "Error executing script" 
     fi
@@ -64,7 +64,7 @@
 
 - name: Remote install python3
   shell: |
-    {{ role_path }}/scripts/remote.install.python3.sh "{{ prop_ipaddress }}" "{{ prop_admin_username }}" "{{ prop_basename }}"
+    {{ role_path }}/scripts/remote.install.python3.sh "{{ prop_host.ipaddress }}" "{{ prop_admin_username }}" "{{ prop_basename }}"
     if [[ "$?" != "0" ]]; then
       echo "Error executing script" 
     fi
@@ -84,7 +84,7 @@
     /{{ prop_basename }}/python/venv/bin/python3 -m pip install setuptools
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Install systemd-timesyncd to ensure time is in sync
@@ -94,7 +94,7 @@
     state: present
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: sync time
@@ -104,7 +104,7 @@
   changed_when: '"CHANGED" in result.stdout'
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Add user config folder
@@ -116,7 +116,7 @@
     state: directory
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Ensure home data folder exists
@@ -128,7 +128,7 @@
     mode: 0755
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 

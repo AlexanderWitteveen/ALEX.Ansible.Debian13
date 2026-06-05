@@ -32,7 +32,7 @@
 #     - gnupg-agent
 #     - software-properties-common
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 # - name: Test k3s installed
@@ -44,7 +44,7 @@
 #   failed_when: 'false'
 #   vars:
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 # - name: Install k3s
@@ -60,7 +60,7 @@
 # ##  - 'not ("Found existing file" in result.stderr)'
 #   vars:
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 # - name: chmod k3s
@@ -70,7 +70,7 @@
 #     executable: /bin/bash
 #   vars:
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 # - name: Copy profile file
@@ -82,7 +82,7 @@
 #     mode: 0777
 #   vars:
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 # - name: Download keyring
@@ -91,7 +91,7 @@
 #     executable: /bin/bash
 #   vars:
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 # - name: Add apt source
@@ -100,7 +100,7 @@
 #     executable: /bin/bash
 #   vars:
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 # - name: Install a list of packages
@@ -112,7 +112,7 @@
 #     packages:
 #     - helm
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 # - name: Install python package
@@ -121,7 +121,7 @@
 #     break_system_packages: true
 #   vars:
 #     ansible_connection: "{{ prop_ansible_connection }}"
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 # # - name: Install Python modules
@@ -129,6 +129,6 @@
 # #     name: pyyaml
 # #   vars:
 # #     ansible_connection: "{{ prop_ansible_connection }}"
-# #     ansible_host: "{{ prop_ipaddress }}"
+# #     ansible_host: "{{ prop_host.ipaddress }}"
 # #   become: true
 

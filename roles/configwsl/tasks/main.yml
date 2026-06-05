@@ -25,7 +25,7 @@
     - wget
     # - net-utils
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Install a list of python packages
@@ -43,7 +43,7 @@
     - python-dotenv
     - requests_toolbelt
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 # - name: Ensure alex folder exists
@@ -79,7 +79,7 @@
     mode: '0400'
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Mount SMB volume
@@ -92,7 +92,7 @@
   loop: "{{ prop_smb_mounts }}"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: ensure all mounts are mounted
@@ -100,7 +100,7 @@
     mount -a
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Install Github CLI
@@ -108,7 +108,7 @@
     deb: /mnt/sources-dev/deb/gh/gh_2.48.0_linux_amd64.deb
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: Install Proxmox Auto Install Assistant
@@ -116,7 +116,7 @@
     deb: /mnt/sources-dev/deb/proxmox/proxmox-auto-install-assistant_8.4.6_amd64.deb
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - ansible.builtin.include_role:

@@ -31,11 +31,11 @@
     flat: yes
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
-    ansible_host: "{{ prop_ipaddress }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
 - name: save cluster IP
-  shell: sed -i -e 's/127.0.0.1/{{ prop_ipaddress }}/g' "/etc/rancher/k3s/k3s.yaml"
+  shell: sed -i -e 's/127.0.0.1/{{ prop_host.ipaddress }}/g' "/etc/rancher/k3s/k3s.yaml"
   args:
     executable: /bin/bash
   changed_when: false
@@ -85,7 +85,7 @@
 #     recurse: yes
 #   vars:
 #     ansible_connection: ssh
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 # - name: Copy file with owner and permissions
@@ -97,7 +97,7 @@
 #     mode: '0644'
 #   vars:
 #     ansible_connection: ssh
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
 
 # - name: Copy profile file
@@ -109,5 +109,5 @@
 #     mode: 0755
 #   vars:
 #     ansible_connection: ssh
-#     ansible_host: "{{ prop_ipaddress }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
 #   become: true
