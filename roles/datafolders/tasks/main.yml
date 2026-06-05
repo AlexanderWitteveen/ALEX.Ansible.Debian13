@@ -15,7 +15,7 @@
 
 - name: Create remote datafolders
   file:
-    path: "/mnt/{{ item.mount }}/{{ item.service }}/{{ prop_hostname }}/{{ item.name }}"
+    path: "/mnt/{{ item.mount }}/{{ item.service }}/{{ prop_host.hostname }}/{{ item.name }}"
     state: directory
     owner: root
     group: root
