@@ -42,6 +42,9 @@
     - 'pymongo[srv]'
     - python-dotenv
     - requests_toolbelt
+    - pillow
+    - py-opendisplay
+    - ptouch
     ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_host.ipaddress }}"
   become: true
