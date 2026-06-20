@@ -15,6 +15,7 @@
     - ca-certificates 
     - curl
     - gnupg
+    - python3-debian
     ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_host.ipaddress }}"
   become: true
@@ -30,11 +31,25 @@
     ansible_host: "{{ prop_host.ipaddress }}"
   become: true
 
-- name: Add Debian apt repository.
-  ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/debian/ trixie stable"
-    filename: docker
-    state: present
+# - name: Add Debian apt repository.
+#   ansible.builtin.apt_repository:
+#     repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/debian/ trixie stable"
+#     filename: docker
+#     state: present
+#   vars:
+#     ansible_connection: "{{ prop_ansible_connection }}"
+#     ansible_host: "{{ prop_host.ipaddress }}"
+#   become: true
+
+- name: Add debian repo
+  deb822_repository:
+    name: docker
+    types: deb
+    uris: https://download.docker.com/linux/debian/
+    suites: trixie
+    components: stable
+    signed_by: /usr/share/keyrings/docker.gpg
+    architectures: amd64
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_host.ipaddress }}"
@@ -81,9 +96,10 @@
 
 - name: Configure Network
   shell: |
-    docker network create \
-      --driver=bridge \
-      alex0
+    if [ $(docker network list | grep alex0 | wc -l) -eq 0 ]
+    then
+      docker network create --driver=bridge alex0
+    fi
   args:
     executable: /bin/bash
   vars:
