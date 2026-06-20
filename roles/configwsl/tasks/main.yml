@@ -120,6 +120,9 @@
   become: true
 
 - ansible.builtin.include_role:
+    name: alex.debian13.installdocker
+
+- ansible.builtin.include_role:
     name: alex.debian13.installoras
 
 - ansible.builtin.include_role:
