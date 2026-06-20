@@ -45,6 +45,7 @@
     - pillow
     - py-opendisplay
     - ptouch
+    - pyusb
     ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_host.ipaddress }}"
   become: true
