@@ -1,15 +1,15 @@
 ---
 
-- debug:
-    var: prop_os
+# - debug:
+#     var: prop_os
 
-- debug:
-    var: prop_smb_shares
-  failed_when: false
+# - debug:
+#     var: prop_smb_shares
+#   failed_when: false
 
-- debug:
-    var: prop_os.smb_shares
-  failed_when: false
+# - debug:
+#     var: prop_os.smb_shares
+#   failed_when: false
 
 - name: add smb share
   shell: |
