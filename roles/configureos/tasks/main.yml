@@ -15,6 +15,9 @@
 - ansible.builtin.include_role: # cronjobs
     name: alex.debian13.cronjobs
 
+- ansible.builtin.include_role: # cmdb tag
+    name: alex.cmdb.cmdbtag
+
 - name: Set a hostname
   ansible.builtin.hostname:
     name: "{{ prop_host.hostname }}"
