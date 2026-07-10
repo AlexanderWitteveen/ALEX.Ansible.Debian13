@@ -1,0 +1,17 @@
+---
+
+- name: Mount NFS volume
+  ansible.posix.mount:
+    src: "{{ item.source }}"
+    path: "{{ item.path }}"
+    # opts: 'rw,auto,vers=3,file_mode=0777,dir_mode=0777,dom=WORKGROUP,credentials=/home/{{ prop_admin_username }}/.{{ prop_basename }}/.smbcred,_netdev,x-systemd.after=network-online.target,x-systemd.automount'
+    # opts: 'rw,auto,vers=3,file_mode=0777,dir_mode=0777,dom=WORKGROUP,credentials=/home/{{ prop_admin_username }}/.{{ prop_basename }}/.smbcred,_netdev,x-systemd.requires=network-online.target,x-systemd.automount,soft,nofail'
+    # opts: 'rw,auto,_netdev,x-systemd.requires=network-online.target,x-systemd.automount,nofail'
+    opts: 'default,auto,nofail'
+    fstype: nfs
+    state: mounted
+  loop: "{{ prop_os.nfs_mounts | default([]) }}"
+  vars:
+    ansible_connection: "{{ prop_ansible_connection }}"
+    ansible_host: "{{ prop_host.ipaddress }}"
+  become: true
