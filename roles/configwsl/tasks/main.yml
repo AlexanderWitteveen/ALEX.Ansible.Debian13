@@ -23,6 +23,7 @@
     - apt-transport-https
     - curl
     - wget
+    - snmp
     # - net-utils
     ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_host.ipaddress }}"

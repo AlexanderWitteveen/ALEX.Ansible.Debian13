@@ -42,6 +42,7 @@
     name: alex.debian13.datafolders
   vars:
     args_datafolder_local: 
+      - name: config
       - name: scripts
       - name: certificates
 
