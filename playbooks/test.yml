@@ -9,5 +9,5 @@
 
   tasks:
     - ansible.builtin.include_role:
-        name: alex.debian13.bashpipe
+        name: alex.debian13.mountnfsshares
 

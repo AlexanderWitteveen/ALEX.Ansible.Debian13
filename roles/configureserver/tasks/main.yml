@@ -17,6 +17,9 @@
       - cifs-utils
       - samba
       - zip
+      - nfs-common
+      - nfs-client
+      - nfs-server
     state: present
     update_cache: yes
   vars:
