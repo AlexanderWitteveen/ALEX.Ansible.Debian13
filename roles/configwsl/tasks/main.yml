@@ -47,6 +47,8 @@
     - py-opendisplay
     - ptouch
     - pyusb
+    - paramiko
+    - scp
     ansible_connection: "{{ prop_ansible_connection }}"
     ansible_host: "{{ prop_host.ipaddress }}"
   become: true
@@ -91,9 +93,9 @@
   ansible.posix.mount:
     src: "{{ item.source }}"
     path: "{{ item.path }}"
-    opts: 'rw,auto,vers=3,file_mode=0777,dir_mode=0777,dom=WORKGROUP,credentials=/home/{{ prop_admin_username }}/.{{ prop_basename }}/.smbcred'
+    opts: 'rw,auto,vers=3,file_mode=0777,dir_mode=0777,dom=WORKGROUP,credentials=/home/{{ prop_admin_username }}/.{{ prop_basename }}/.smbcred,nofail'
     fstype: cifs
-    state: mounted
+    state: present
   loop: "{{ prop_smb_mounts }}"
   vars:
     ansible_connection: "{{ prop_ansible_connection }}"

@@ -17,7 +17,7 @@
   ansible.posix.mount:
     src: "{{ item.source }}"
     path: "{{ item.path }}"
-    opts: 'auto,nofail'
+    opts: '_netdev,rw,nofail'
     fstype: nfs
     state: mounted
   loop: "{{ prop_os.nfs_mounts | default([]) }}"
